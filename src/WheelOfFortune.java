@@ -12,6 +12,7 @@ public class WheelOfFortune {
         printWelcomeMessage();
         cleanAll();
         askNameOfPlayers();
+        hideWord();
     }
 
     static void cleanAll() {
@@ -24,7 +25,7 @@ public class WheelOfFortune {
                         "--------------------------------WHEEL OF FORTUNE GAME-----------------------------------\n";
 
         System.out.println(blueColor + welcomeMessage + resetColor);
-        System.out.println("START OF THE GAME!");
+        System.out.println(blueColor + "START OF THE GAME!" + resetColor);
     }
 
     static String askNameOfPlayers() {
@@ -39,4 +40,31 @@ public class WheelOfFortune {
         }
         return players.get(0);
     }
+
+    static String hideWord() {
+        String[] words = {"programming", "software", "computer", "development", "technology", "chocolate", "happiness","journey","dinosaur","universe"};
+        String[] descriptions = {"A way to create instructions for computers.",
+                "The field of creating applications.",
+                "An electronic device for processing data.",
+                "The process of improving or creating new programs.",
+                "The application of scientific knowledge for practical purposes, especially in industry.",
+                "A sweet, usually brown, food made from roasted and ground cacao seeds, commonly used in desserts and candies.",
+                "A state of well-being and contentment; feeling joy and satisfaction.",
+                "The act of traveling from one place to another, often over a long distance.",
+                "A prehistoric reptile, often of gigantic size, that lived millions of years ago.",
+                "All of space and everything in it, including stars, planets, galaxies, and all forms of matter and energy."};
+
+        int randomIndex = random.nextInt(words.length);
+        String word = words[randomIndex];
+        String description = descriptions[randomIndex];
+
+        System.out.println("The word has " + word.length() + " letters.");
+        System.out.println("Description: " + description);
+
+        char[] hiddenWord = new char[word.length()];
+        Arrays.fill(hiddenWord, '⬜');
+
+        System.out.println("Word: " + new String(hiddenWord));
+
+        return players.get(random.nextInt(players.size())); }
 }
