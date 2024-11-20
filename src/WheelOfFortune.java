@@ -17,6 +17,7 @@ public class WheelOfFortune {
     static void cleanAll() {
         System.out.println("\033[H\033[J");
     }
+
     static void printWelcomeMessage() {
         String welcomeMessage =
                 "----------------------------------------WELCOME!----------------------------------------\n" +
@@ -27,24 +28,15 @@ public class WheelOfFortune {
     }
 
     static String askNameOfPlayers() {
-        System.out.println("Enter your nicknames." +
-                    "\nTo finish leave the line blank and press" + redColor + " ENTER. " + resetColor);
+        System.out.print("Enter number of players: ");
+        int numberOfPlayers = sc.nextInt();
+        sc.nextLine();
 
-            while (true) {
-                System.out.println("Nickname:");
-                String nickname = sc.nextLine();
-                if (nickname.isEmpty()) {
-                    break;
-                }
-                players.add(nickname);
-            }
-            if (players.isEmpty()) {
-                System.out.println("No players found. Game is over.");
-                return null;
-            }
-            Collections.shuffle(players);
-            System.out.println("Players: " + players);
-            System.out.println("The order of moves is determined randomly.");
-
-        return players.get(0);}
+        for (int i = 1; i <= numberOfPlayers; i++) {
+            System.out.print("Enter nickname #" + i + ": ");
+            String name = sc.nextLine();
+            players.add(name);
+        }
+        return players.get(0);
     }
+}
