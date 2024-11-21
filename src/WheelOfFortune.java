@@ -4,15 +4,18 @@ public class WheelOfFortune {
     public static final Scanner sc = new Scanner(System.in);
     public static final ArrayList<String> players = new ArrayList<>();
     public static final Random random = new Random();
+
+    public static final String greenColor = "\u001B[32m";
     public static final String redColor = "\u001B[31m";
     public static final String resetColor = "\u001B[0m";
-    public static final String blueColor = "\u001B[44m";
+    public static final String blueColorBackground = "\u001B[44m";
+    public static final String blueColor = "\u001B[34m";
 
     public static void main(String[] args) {
         printWelcomeMessage();
         cleanAll();
         askNameOfPlayers();
-        hideWord();
+        startGame();
     }
 
     static void cleanAll() {
@@ -24,7 +27,7 @@ public class WheelOfFortune {
                 "----------------------------------------WELCOME!----------------------------------------\n" +
                         "--------------------------------WHEEL OF FORTUNE GAME-----------------------------------\n";
 
-        System.out.println(blueColor + welcomeMessage + resetColor);
+        System.out.println(blueColorBackground + welcomeMessage + resetColor);
         System.out.println(blueColor + "START OF THE GAME!" + resetColor);
     }
 
@@ -41,7 +44,7 @@ public class WheelOfFortune {
         return players.get(0);
     }
 
-    static String hideWord() {
+    static String startGame() {
         String[] words = {"programming", "software", "computer", "development", "technology", "chocolate", "happiness","journey","dinosaur","universe"};
         String[] descriptions = {"A way to create instructions for computers.",
                 "The field of creating applications.",
@@ -58,13 +61,16 @@ public class WheelOfFortune {
         String word = words[randomIndex];
         String description = descriptions[randomIndex];
 
-        System.out.println("The word has " + word.length() + " letters.");
-        System.out.println("Description: " + description);
+        ArrayList<Character> alphabet = new ArrayList<>();
+        for (char c = 'A'; c <= 'Z'; c++) {
+            alphabet.add(c);
+        }
+
+        System.out.println(blueColor + "LET'S GOOO" + resetColor);
 
         char[] hiddenWord = new char[word.length()];
         Arrays.fill(hiddenWord, '⬜');
 
-        System.out.println("Word: " + new String(hiddenWord));
 
-        return players.get(random.nextInt(players.size())); }
+    return alphabet.toString();}
 }
