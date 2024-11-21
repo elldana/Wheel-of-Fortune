@@ -71,6 +71,11 @@ public class WheelOfFortune {
         char[] hiddenWord = new char[word.length()];
         Arrays.fill(hiddenWord, '⬜');
 
+        Map<String, Integer> scores = new HashMap<>();
+        for (String player : players) {
+            scores.put(player, 0);
+        }
+
 
     return alphabet.toString();}
 }
