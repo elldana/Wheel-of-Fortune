@@ -66,7 +66,7 @@ public class WheelOfFortune {
             alphabet.add(c);
         }
 
-        System.out.println(blueColor + "LET'S GOOO" + resetColor);
+        System.out.println(blueColor + "LET'S GOOO !!!" + resetColor);
 
         char[] hiddenWord = new char[word.length()];
         Arrays.fill(hiddenWord, '⬜');
@@ -74,6 +74,25 @@ public class WheelOfFortune {
         Map<String, Integer> scores = new HashMap<>();
         for (String player : players) {
             scores.put(player, 0);
+        }
+
+        boolean wordGuessed = false;
+        int currentPlayerIndex = 0;
+
+        while (!wordGuessed && !alphabet.isEmpty()) {
+            String currentPlayer = players.get(currentPlayerIndex);
+            System.out.println("Current player: " + currentPlayer);
+            System.out.println("----------------------------------------------------------------------------------------");
+
+            System.out.println("The word has " + blueColor + word.length() + resetColor + " letters.");
+            System.out.println("Description: " + blueColor + description + resetColor);
+            System.out.println("Word: " + new String(hiddenWord));
+            System.out.println("Remaining letters: "
+                    + blueColor + alphabet + resetColor);
+            System.out.println(currentPlayer + ", enter letter or guess the word: ");
+
+            String guess = sc.nextLine();
+
         }
 
 
