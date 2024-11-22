@@ -4,6 +4,8 @@ public class WheelOfFortune {
     public static final Scanner sc = new Scanner(System.in);
     public static final ArrayList<String> players = new ArrayList<>();
     public static final Random random = new Random();
+    public static final ArrayList<Integer> scores = new ArrayList<>();
+    public static final ArrayList<String> eliminatedPlayers = new ArrayList<>();
 
     public static final String greenColor = "\u001B[32m";
     public static final String redColor = "\u001B[31m";
@@ -40,61 +42,92 @@ public class WheelOfFortune {
             System.out.print("Enter nickname #" + i + ": ");
             String name = sc.nextLine();
             players.add(name);
+            scores.add(0);
         }
+
+        Collections.shuffle(players);
+        System.out.println("Player order: " + players);
+
         return players.get(0);
     }
 
     static String startGame() {
-        String[] words = {"programming", "software", "computer", "development", "technology", "chocolate", "happiness","journey","dinosaur","universe"};
-        String[] descriptions = {"A way to create instructions for computers.",
-                "The field of creating applications.",
-                "An electronic device for processing data.",
-                "The process of improving or creating new programs.",
-                "The application of scientific knowledge for practical purposes, especially in industry.",
-                "A sweet, usually brown, food made from roasted and ground cacao seeds, commonly used in desserts and candies.",
-                "A state of well-being and contentment; feeling joy and satisfaction.",
-                "The act of traveling from one place to another, often over a long distance.",
-                "A prehistoric reptile, often of gigantic size, that lived millions of years ago.",
-                "All of space and everything in it, including stars, planets, galaxies, and all forms of matter and energy."};
+        String[][] wordsAndDescriptions = {
+                {"programming", "A way to create instructions for computers."},
+                {"software", "The field of creating applications."},
+                {"computer", "An electronic device for processing data."},
+                {"development", "The process of improving or creating new programs."},
+                {"technology", "The application of scientific knowledge for practical purposes, especially in industry."},
+                {"chocolate", "A sweet, usually brown, food made from roasted and ground cacao seeds, commonly used in desserts and candies."},
+                {"happiness", "A state of well-being and contentment; feeling joy and satisfaction."},
+                {"journey", "The act of traveling from one place to another, often over a long distance."},
+                {"dinosaur", "A prehistoric reptile, often of gigantic size, that lived millions of years ago."},
+                {"universe", "All of space and everything in it, including stars, planets, galaxies, and all forms of matter and energy."}
+        };
 
-        int randomIndex = random.nextInt(words.length);
-        String word = words[randomIndex];
-        String description = descriptions[randomIndex];
+        int randomIndex = random.nextInt(wordsAndDescriptions.length);
+        String secretWord = wordsAndDescriptions[randomIndex][0];
+        String description = wordsAndDescriptions[randomIndex][1];
+
+
+        char[] hiddenWord = new char[secretWord.length()];
+        Arrays.fill(hiddenWord, '_');
 
         ArrayList<Character> alphabet = new ArrayList<>();
         for (char c = 'A'; c <= 'Z'; c++) {
             alphabet.add(c);
         }
-
         System.out.println(blueColor + "LET'S GOOO !!!" + resetColor);
-
-        char[] hiddenWord = new char[word.length()];
-        Arrays.fill(hiddenWord, '⬜');
-
-        Map<String, Integer> scores = new HashMap<>();
-        for (String player : players) {
-            scores.put(player, 0);
-        }
 
         boolean wordGuessed = false;
         int currentPlayerIndex = 0;
 
-        while (!wordGuessed && !alphabet.isEmpty()) {
+        while (!wordGuessed) {
             String currentPlayer = players.get(currentPlayerIndex);
-            System.out.println("Current player: " + currentPlayer);
-            System.out.println("----------------------------------------------------------------------------------------");
 
-            System.out.println("The word has " + blueColor + word.length() + resetColor + " letters.");
+            System.out.println(secretWord);
+
+            System.out.println("----------------------------------------------------------------------------------------");
+            System.out.println("Current player: " + currentPlayer + " | Scores: " + scores.get(currentPlayerIndex));
+            System.out.println("----------------------------------------------------------------------------------------");
+            System.out.println("The word has " + blueColor + secretWord.length() + resetColor + " letters.");
             System.out.println("Description: " + blueColor + description + resetColor);
             System.out.println("Word: " + new String(hiddenWord));
             System.out.println("Remaining letters: "
                     + blueColor + alphabet + resetColor);
+            System.out.println("----------------------------------------------------------------------------------------");
             System.out.println(currentPlayer + ", enter letter or guess the word: ");
 
-            String guess = sc.nextLine();
+            String guess = sc.nextLine().toUpperCase();
 
+
+            if (guess.length() == 1) {
+                char guessedLetter = guess.charAt(0);
+                secretWord = secretWord.toUpperCase();
+                guessedLetter = Character.toUpperCase(guessedLetter);
+                if (!alphabet.contains(guessedLetter)) {
+                    System.out.println("This letter has already been used.");
+                } else {
+                    alphabet.remove((Character) guessedLetter);
+                    boolean isLetterFound = false;
+
+                    for (int i = 0; i < secretWord.length(); i++) {
+                        if (secretWord.charAt(i) == guessedLetter) {
+                            hiddenWord[i] = guessedLetter;
+                            isLetterFound = true;
+                        }
+                    }
+
+                    if (isLetterFound) {
+                        System.out.println(greenColor + "Congratulations!\n" + resetColor + currentPlayer + "! You guessed the letter '" + guessedLetter + "' correctly!");
+                        scores.set(currentPlayerIndex, scores.get(currentPlayerIndex) + 100);
+                    } else {
+                        System.out.println(redColor + "Incorrect guess!\n" + resetColor + "This letter is not in the word.");
+                        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                    }
+                }
+            }
         }
-
-
-    return alphabet.toString();}
+        return alphabet.toString();
+    }
 }
