@@ -4,8 +4,8 @@ public class WheelOfFortune {
     public static final Scanner sc = new Scanner(System.in);
     public static final ArrayList<String> players = new ArrayList<>();
     public static final Random random = new Random();
-    public static final ArrayList<Integer> scores = new ArrayList<>();
-    public static final ArrayList<String> eliminatedPlayers = new ArrayList<>();
+    public static final ArrayList <Integer> scores = new ArrayList<>();
+    public static final ArrayList <String> eliminatedPlayers = new ArrayList<>();
 
     public static final String greenColor = "\u001B[32m";
     public static final String redColor = "\u001B[31m";
@@ -63,7 +63,7 @@ public class WheelOfFortune {
                 {"journey", "The act of traveling from one place to another, often over a long distance."},
                 {"dinosaur", "A prehistoric reptile, often of gigantic size, that lived millions of years ago."},
                 {"universe", "All of space and everything in it, including stars, planets, galaxies, and all forms of matter and energy."}
-        };
+            };
 
         int randomIndex = random.nextInt(wordsAndDescriptions.length);
         String secretWord = wordsAndDescriptions[randomIndex][0];
@@ -94,7 +94,7 @@ public class WheelOfFortune {
             System.out.println("Description: " + blueColor + description + resetColor);
             System.out.println("Word: " + new String(hiddenWord));
             System.out.println("Remaining letters: "
-                    + blueColor + alphabet + resetColor);
+            + blueColor + alphabet + resetColor);
             System.out.println("----------------------------------------------------------------------------------------");
             System.out.println(currentPlayer + ", enter letter or guess the word: ");
 
@@ -107,7 +107,8 @@ public class WheelOfFortune {
                 guessedLetter = Character.toUpperCase(guessedLetter);
                 if (!alphabet.contains(guessedLetter)) {
                     System.out.println("This letter has already been used.");
-                } else {
+                }
+                else {
                     alphabet.remove((Character) guessedLetter);
                     boolean isLetterFound = false;
 
@@ -121,13 +122,39 @@ public class WheelOfFortune {
                     if (isLetterFound) {
                         System.out.println(greenColor + "Congratulations!\n" + resetColor + currentPlayer + "! You guessed the letter '" + guessedLetter + "' correctly!");
                         scores.set(currentPlayerIndex, scores.get(currentPlayerIndex) + 100);
-                    } else {
+                    }
+                    else {
                         System.out.println(redColor + "Incorrect guess!\n" + resetColor + "This letter is not in the word.");
                         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
                     }
                 }
             }
-        }
-        return alphabet.toString();
-    }
+            else if (guess.equals(secretWord)) {
+                wordGuessed = true;
+                System.out.println(greenColor + "WINNER!" + "\nCongratulations, " + currentPlayer +"! You guessed the word correctly!" + resetColor);
+                scores.set(currentPlayerIndex, scores.get(currentPlayerIndex) + 1000);
+            }
+            else {
+                System.out.println(redColor + "INCORRECT GUESS! " + currentPlayer + ", you are OUT of the game. " + resetColor);
+                eliminatedPlayers.add(currentPlayer);
+                players.remove(currentPlayerIndex);
+                scores.remove(currentPlayerIndex);
+                currentPlayerIndex = currentPlayerIndex % players.size();
+                }
+
+            if (String.valueOf(hiddenWord).equals(secretWord)) {
+                wordGuessed = true;
+                System.out.println(greenColor + "WINNER!" + "\nCongratulations, " + currentPlayer + "! You guessed the word correctly!" + resetColor);
+                }
+
+            }
+            if (players.isEmpty()) {
+                    System.out.println("All players are out of the game. The word was: " + secretWord);
+                }
+
+        System.out.println("\nGame Over! Final Scores:");
+        System.out.println("Winner: " + players.get(0) + " with " + scores.get(0) + " scores!");
+        sc.close();
+
+    return alphabet.toString();}
 }
