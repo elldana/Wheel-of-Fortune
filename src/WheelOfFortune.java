@@ -175,4 +175,29 @@ public class WheelOfFortune {
         sc.close();
 
     return alphabet.toString();}
+
+    static boolean ifPlayersGuess(String secretWord, int leaderIndex, String currentPlayer) {
+        String leaderByPoints = players.get(leaderIndex);
+        for (int i = 0; i < players.size(); i++) {
+            if (i ==leaderIndex) {
+                continue;
+            }
+            String player = players.get(i);
+            System.out.println(player + ", enter the word: ");
+            String wordGuess = sc.nextLine().toUpperCase();
+
+            if (wordGuess.equalsIgnoreCase(secretWord)) {
+                System.out.println(greenColor + "WINNER!\n" + "Congratulations, " + player + "! You guessed the word correctly!" + resetColor);
+                return true;
+            }
+            else {
+                System.out.println(redColor + "INCORRECT GUESS! \n" + player + ", you are OUT of the game." + resetColor);
+                eliminatedPlayers.add(player);
+                players.remove(i);
+                scores.remove(i);
+                i--;
+            }
+        }
+        System.out.println(greenColor + "WINNER BY POINTS!" + "\nCongratulations, " + leaderByPoints + "!"  + resetColor);
+        return true; }
 }
