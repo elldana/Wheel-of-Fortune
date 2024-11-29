@@ -16,7 +16,7 @@ public class WheelOfFortune {
     public static void main(String[] args) {
         printWelcomeMessage();
         askNameOfPlayers();
-        startGame();
+        displayGame();
     }
 
     static void cleanAll() {
@@ -44,17 +44,22 @@ public class WheelOfFortune {
         for (int i = 1; i <= numberOfPlayers; i++) {
             System.out.print("Enter nickname #" + i + ": ");
             String name = sc.nextLine();
-            players.add(name);
-            scores.add(0);
+            if (!name.isEmpty()) {
+                players.add(name);
+                scores.add(0);
+            }
+            else {
+                System.out.println("Invalid name. Please enter a valid nickname.");
+                i--;
+            }
         }
-
         Collections.shuffle(players);
         System.out.println("Player order: " + players);
 
         return players.get(0);
     }
 
-    static String startGame() {
+    static String displayGame() {
         String[][] wordsAndDescriptions = {
                 {"programming", "A way to create instructions for computers."},
                 {"software", "The field of creating applications."},
@@ -86,6 +91,7 @@ public class WheelOfFortune {
         boolean wordGuessed = false;
         int currentPlayerIndex = 0;
         int leaderIndex = 0;
+        String winner = "";
 
         while (!wordGuessed) {
             String currentPlayer = players.get(currentPlayerIndex);
@@ -132,7 +138,7 @@ public class WheelOfFortune {
                             System.out.println(redColor + "ATTENTION! \n" + resetColor +
                                     greenColor + currentPlayer + " scored 600 points!\n" + resetColor +
                                     "Now each player is given the opportunity to guess the word.\n" +
-                                    "If no one guesses, " + redColor + "THE WINNER IS " + currentPlayer + resetColor );
+                                    "If no one guesses, THE WINNER will be " + redColor + currentPlayer + resetColor );
                             ifPlayersGuess(secretWord, leaderIndex, currentPlayer);
                             break;
                         }
@@ -145,7 +151,9 @@ public class WheelOfFortune {
             }
             else if (guess.equals(secretWord)) {
                 wordGuessed = true;
+                winner = currentPlayer;
                 System.out.println(greenColor + "WINNER!" + "\nCongratulations, " + currentPlayer +"! You guessed the word correctly!" + resetColor);
+                displayGameResults(secretWord, winner);
                 scores.set(currentPlayerIndex, scores.get(currentPlayerIndex) + 1000);
             }
             else {
@@ -158,26 +166,22 @@ public class WheelOfFortune {
 
             if (String.valueOf(hiddenWord).equals(secretWord)) {
                 wordGuessed = true;
+                winner = currentPlayer;
                 System.out.println(greenColor + "WINNER!" + "\nCongratulations, " + currentPlayer + "! You guessed the word correctly!" + resetColor);
+                displayGameResults(secretWord, winner);
                 }
             }
             if (players.isEmpty()) {
                     System.out.println("All players are out of the game. The word was: " + secretWord);
                 }
 
-
-
-        System.out.println( "\nGame Over! Final Scores:");
-        System.out.println("The word was: " + blueColor + secretWord + resetColor) ;
-        System.out.println("Winner: " + players.get(0) + " with 1000 scores! ");
-
-        System.out.println(greenColor + "THANK YOU FOR THE GAME!" + resetColor);
+            cleanAll();
 
         sc.close();
 
     return alphabet.toString();}
 
-    static boolean ifPlayersGuess(String secretWord, int leaderIndex, String currentPlayer) {
+    static boolean ifPlayersGuess(String secretWord, int leaderIndex, String winner) {
         String leaderByPoints = players.get(leaderIndex);
         for (int i = 0; i < players.size(); i++) {
             if (i ==leaderIndex) {
@@ -188,8 +192,9 @@ public class WheelOfFortune {
             String wordGuess = sc.nextLine().toUpperCase();
 
             if (wordGuess.equalsIgnoreCase(secretWord)) {
-                System.out.println(greenColor + "WINNER!\n" + "Congratulations, " + player + "! You guessed the word correctly!" + resetColor);
-                player = leaderByPoints;
+                winner = player;
+                System.out.println(greenColor + "WINNER!\n" + "Congratulations, " + winner + "! You guessed the word correctly!" + resetColor);
+                displayGameResults(secretWord, winner);
                 return true;
             }
             else {
@@ -201,5 +206,19 @@ public class WheelOfFortune {
             }
         }
         System.out.println(greenColor + "WINNER BY POINTS!" + "\nCongratulations, " + leaderByPoints + "!"  + resetColor);
-        return true; }
+        winner = leaderByPoints;
+        displayGameResults(secretWord, winner);
+        return true;
+    }
+
+    static String displayGameResults(String secretWord, String winner) {
+        cleanAll();
+        System.out.println( "\nGame Over! Final Scores:");
+        System.out.println("The word was: " + blueColor + secretWord + resetColor) ;
+        System.out.println("Winner: " + winner + " with 1000 scores! ");
+
+        System.out.println(greenColor + "THANK YOU FOR THE GAME!" + resetColor);
+    return secretWord;
+    }
 }
+
