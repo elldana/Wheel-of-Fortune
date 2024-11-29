@@ -15,13 +15,13 @@ public class WheelOfFortune {
 
     public static void main(String[] args) {
         printWelcomeMessage();
-        cleanAll();
         askNameOfPlayers();
         startGame();
     }
 
     static void cleanAll() {
         System.out.println("\033[H\033[J");
+        System.out.flush();
     }
 
     static void printWelcomeMessage() {
@@ -103,6 +103,7 @@ public class WheelOfFortune {
 
             String guess = sc.nextLine().toUpperCase();
 
+            cleanAll();
 
             if (guess.length() == 1) {
                 char guessedLetter = guess.charAt(0);
@@ -132,7 +133,7 @@ public class WheelOfFortune {
                                     greenColor + currentPlayer + " scored 600 points!\n" + resetColor +
                                     "Now each player is given the opportunity to guess the word.\n" +
                                     "If no one guesses, " + redColor + "THE WINNER IS " + currentPlayer + resetColor );
-                            wordGuessed = ifPlayersGuess(secretWord, leaderIndex, currentPlayer);
+                            ifPlayersGuess(secretWord, leaderIndex, currentPlayer);
                             break;
                         }
                     }
@@ -167,8 +168,8 @@ public class WheelOfFortune {
 
 
         System.out.println( "\nGame Over! Final Scores:");
-        System.out.println("The word was: " + secretWord);
-        System.out.println("Winner: " + players.get(0) + " with " + scores.get(0) + " scores!");
+        System.out.println("The word was: " + blueColor + secretWord + resetColor) ;
+        System.out.println("Winner: " + players.get(0) + " with 1000 scores! ");
 
         System.out.println(greenColor + "THANK YOU FOR THE GAME!" + resetColor);
 
@@ -188,6 +189,7 @@ public class WheelOfFortune {
 
             if (wordGuess.equalsIgnoreCase(secretWord)) {
                 System.out.println(greenColor + "WINNER!\n" + "Congratulations, " + player + "! You guessed the word correctly!" + resetColor);
+                player = leaderByPoints;
                 return true;
             }
             else {
