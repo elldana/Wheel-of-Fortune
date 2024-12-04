@@ -145,8 +145,13 @@ public class WheelOfFortune {
                             System.out.println(redColor + "ATTENTION!" + resetColor);
                             System.out.println("----------------------------------------------------------------------------------------");
                             System.out.println(greenColor + currentPlayer + " scored 600 points!\n" + resetColor +
-                                    "Now each player is given the opportunity to guess the word.\n" +
+                                    "Now for each player is given the opportunity to guess the word.\n" +
                                     "If no one guesses, THE WINNER will be " + redColor + currentPlayer + resetColor );
+                            System.out.println("----------------------------------------------------------------------------------------");
+                            System.out.println("The word has " + blueColor + secretWord.length() + resetColor + " letters.");
+                            System.out.println("Description: " + blueColor + description + resetColor);
+                            System.out.println("Word: " + new String(hiddenWord));
+
                             ifPlayersGuessCorrect(secretWord, leaderIndex, currentPlayer);
                             break;
                         }
@@ -205,6 +210,7 @@ public class WheelOfFortune {
         for (int i = 0; i < players.size(); i++) {
             if (i ==leaderIndex) {
                 continue;
+
             }
             String player = players.get(i);
             System.out.println("----------------------------------------------------------------------------------------");
